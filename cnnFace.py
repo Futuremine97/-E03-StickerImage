@@ -20,7 +20,10 @@ import time
 print(os.getenv('HOME'))
 my_image_path = os.getenv('HOME')+'/Downloads/e0e0.png'
 img_bgr = cv2.imread(my_image_path)    # OpenCV로 이미지를 불러옵니다
-
+my_image_path2 = os.getenv('HOME')+'/Downloads/ioio.png'
+img_bgr2 = cv2.imread(my_image_path2) 
+   # OpenCV로 이미지를 불러옵니다
+img_rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
 # plt.imshow(img_bgr)
 # handle command line arguments
 # ap = argparse.ArgumentParser()
@@ -34,8 +37,12 @@ img_bgr = cv2.imread(my_image_path)    # OpenCV로 이미지를 불러옵니다
 
 # apply face detection (cnn)
 img2 = dlib.load_rgb_image(my_image_path)
+img22 = cv2.cvtColor(img2, cv2.COLOR_BGR2RGB)
+img3 = dlib.load_rgb_image(my_image_path2)
+img33 = cv2.cvtColor(img3, cv2.COLOR_BGR2RGB)
+
 cnn_face_detector = dlib.cnn_face_detection_model_v1(os.getenv('HOME')+'/Downloads/mmod_human_face_detector.dat')#가중치 파일 제공해야 함!!!
-faces_cnn = cnn_face_detector(img2, 1)
+faces_cnn = cnn_face_detector(img22, 1)
 
 
 # loop over detected faces
@@ -48,24 +55,25 @@ for face in faces_cnn:
     cv2.rectangle(img2, (x,y), (x+w,y+h), (0,0,255), 2)
 
 
-
-img_rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
-plt.imshow(img_rgb)
-plt.show()
-
 # write at the top left corner of the image
 # for color identification
-img_height, img_width = img2.shape[:2]
+img_height, img_width = img22.shape[:2]
 
 cv2.putText(img2, "CNN", (img_width-50,40), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
                 (0,0,255), 2)
 
 # display output image
-cv2.imshow("face detection with dlib", img2)
-cv2.waitKey()
+cv2.imshow("face detection with dlib.png", img22)
+cv2.imwrite("face detection with dlib.png", img22)
 
-# save output image 
-cv2.imwrite("cnn_face_detection.png", img2)
+
+
 
 # close all windows
 cv2.destroyAllWindows()
+
+
+
+e1 = cv2.addWeighted(img33, 0.5 , img22 , 0.5, 3)
+cv2.imshow('e1', e1)
+cv2.imwrite("addweighted.png",e1)
