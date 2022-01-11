@@ -20,17 +20,14 @@ import time
 print(os.getenv('HOME'))
 my_image_path = os.getenv('HOME')+'/Downloads/e0e0.png'
 img_bgr = cv2.imread(my_image_path)    # OpenCV로 이미지를 불러옵니다
-my_image_path2 = os.getenv('HOME')+'/Downloads/9797.png'
+
+
+my_image_path2 = os.getenv('HOME')+'/Downloads/45454.png'
 img_bgr2 = cv2.imread(my_image_path2) 
    # OpenCV로 이미지를 불러옵니다
 img_rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
 
-res = cv2.resize(img_bgr2, dsize=(2944, 2200, 3), interpolation=cv2.INTER_CUBIC)
 
-print(res.reshape)
-t1 = img_bgr.reshape(-1,)
-t2 = t1[:1691880]
-t3= t2.reshape(613,920,3)
 # plt.imshow(img_bgr)
 # handle command line arguments
 # ap = argparse.ArgumentParser()
@@ -44,15 +41,16 @@ t3= t2.reshape(613,920,3)
 
 # apply face detection (cnn)
 img2 = dlib.load_rgb_image(my_image_path)
-img22 = cv2.cvtColor(img2, cv2.COLOR_BGR2RGB)
+img2c = cv2.cvtColor(img2, cv2.COLOR_BGR2RGB)
+#img22 = cv2.cvtColor(img2, cv2.COLOR_BGR2RGB)
 img3 = dlib.load_rgb_image(my_image_path2)
-img33 = cv2.cvtColor(img3, cv2.COLOR_BGR2RGB)
-t1 = img2.reshape(-1,1)
-t2 = t1[:1691880]
-t3= t2.reshape(613,920,3)
+img3c = cv2.cvtColor(img3, cv2.COLOR_BGR2RGB)
+print(img3c.reshape)
+
+#img33 = cv2.cvtColor(img3, cv2.COLOR_BGR2RGB)
 
 cnn_face_detector = dlib.cnn_face_detection_model_v1(os.getenv('HOME')+'/Downloads/mmod_human_face_detector.dat')#가중치 파일 제공해야 함!!!
-faces_cnn = cnn_face_detector(img3, 1)
+faces_cnn = cnn_face_detector(img2c, 1)
 
 
 # loop over detected faces
@@ -62,32 +60,33 @@ for face in faces_cnn:
     w = face.rect.right() - x
     h = face.rect.bottom() - y
      # draw box over face
-    cv2.rectangle(img3, (x,y), (x+w,y+h), (0,0,255), 2)
+    cv2.rectangle(img2c, (x,y), (x+w,y+h), (0,0,255), 2)
 
 
 # write at the top left corner of the image
 # for color identification
-img_height, img_width = img3.shape[:2]
+img_height, img_width = img2c.shape[:2]
 
-cv2.putText(img3, "CNN", (img_width-50,40), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
+cv2.putText(img2c, "CNN", (img_width-50,40), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
                 (0,0,255), 2)
 
 # display output image
-cv2.imshow("face detection with dlib.png", img3)
-cv2.imwrite("face detection with dlib.png", img3)
-print(t3.shape)
+cv2.imshow("face detection with dlib.png", img2c)
+cv2.imwrite("face detection with dlib.png", img2c)
 
-print(img3.shape)
-print(img2.shape)
-t4 = img3.reshape(-1,)
-t5 = t4[:1691880]
-t6= t5.reshape(613,920,3)
-print(t6.shape)
+cv2.destroyAllWindows()
+#print(t3.shape)
+
+#print(img3.shape)
+#print(img2.shape)
+#t4 = img3.reshape(-1,1)
+#t5 = t4[:499500]
+#t6= t5.reshape(500,333,3)
+#print(t6.shape)
 # close all windows
-t3t = np.array(t3)
-t6t = np.array(t6)
-
-
-e1 = cv2.addWeighted(t6t, 0.5 , t3t , 0.7, 2.4)
+e1 = cv2.addWeighted(img2c, 0.5 , img3c , 0.5, 3)
 cv2.imshow('e1', e1)
 cv2.imwrite("addweighted.png",e1)
+
+
+
