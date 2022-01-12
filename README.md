@@ -5,3 +5,5 @@ CNN 을 활용하여 사각형을 그렸고 (얼굴인식)
 ![addweighted](https://user-images.githubusercontent.com/62669499/148928817-46db40fc-9141-482d-81b8-78416a29ccc7.png)
 ![face detection with dlib](https://user-images.githubusercontent.com/62669499/148928969-18da8df2-44e3-4c9a-92de-ca1703fb1ae3.png)
 두개의 파이썬 코드로 스파이더에서 돌리면 된다!<br>
+![addweighted](https://user-images.githubusercontent.com/62669499/149067091-689de2a7-a0ae-4b90-929e-036984dd7c7d.png)
+cnnFace8-interpolation2.py 로 돌려본 결과! <br>
