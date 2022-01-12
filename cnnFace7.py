@@ -43,6 +43,8 @@ img2 = dlib.load_rgb_image(my_image_path)
 img22 = cv2.cvtColor(img2, cv2.COLOR_BGR2RGB)
 img3 = dlib.load_rgb_image(my_image_path2)
 img33 = cv2.cvtColor(img3, cv2.COLOR_BGR2RGB)
+
+
 t1 = img2.reshape(-1,1)
 t2 = t1[:6903600]
 t3= t2.reshape(1046,2200,3)
@@ -63,6 +65,10 @@ for face in faces_cnn:
 
 # write at the top left corner of the image
 # for color identification
+print("img22.shape")
+print(img22.shape)
+print("img33.shape")
+print(img33.shape)
 img_height, img_width = img22.shape[:2]
 
 cv2.putText(img22, "CNN", (img_width-50,40), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
@@ -79,43 +85,62 @@ print(img2.shape)
 tq1 = np.resize(img2, (1040,2200,3))
 tq2 = np.resize(img3, (1040,2200,3))
 ##interpolation
-width1 = 2200
-height1 = 1040
+#width1 = 2200
+#height1 = 1040
 
-img_stack_sm2 = np.zeros((height1, width1, 1040), dtype = int)
-for idx in range(len(tq1)-1):
-    img8 = tq1[idx, :, :]
-    img_sm8 = cv2.resize(img8, (height1, width1), interpolation=cv2.INTER_CUBIC)
-    img_stack_sm2[idx, :, :] = img_sm8
+#img_stack_sm2 = np.zeros((height1, width1, 1040), dtype = int)
+#for idx in range(len(tq1)-1):
+#    img8 = tq1[idx, :, :]
+#    img_sm8 = cv2.resize(img8, (height1, width1), interpolation=cv2.INTER_CUBIC)
+#    img_stack_sm2[idx, :, :] = img_sm8
+##
+##interpolation
+width1= 2200
+height1 = 1040
+img_stack_sm6 = np.zeros((height1, width1, 1040),dtype = int)
+img_sm10 = cv2.resize(img22, (height1, width1), interpolation=cv2.INTER_CUBIC)#보간법. cubic 이 linear 보다 좋음.
+img_stack_sm6[idx, :, :] = img_sm10
 ##
 
 
+##interpolation
+#width2 = 2200
+#height2 = 1040
+#img_stack_sm3 = np.zeros((height2, width2, 1040),dtype = int)
+#print("len(tq2)-1")
+#print(len(tq2)-1)
+#for idx in range(len(tq2)-1):
+#    img9 = tq2[idx, :, :]
+#    img_sm9 = cv2.resize(img9, (height2, width2), interpolation=cv2.INTER_CUBIC)#보간법. cubic 이 linear 보다 좋음.
+#    img_stack_sm3[idx, :, :] = img_sm9
+##
 
 ##interpolation
 width2 = 2200
 height2 = 1040
-img_stack_sm3 = np.zeros((height2, width2, 1040),dtype = int)
-print("len(tq2)-1")
-print(len(tq2)-1)
-for idx in range(len(tq2)-1):
-    img9 = tq2[idx, :, :]
-    img_sm9 = cv2.resize(img9, (height2, width2), interpolation=cv2.INTER_CUBIC)
-    img_stack_sm3[idx, :, :] = img_sm9
+img_stack_sm5 = np.zeros((height2, width2, 1040),dtype = int)
+img_sm9 = cv2.resize(img33, (height2, width2), interpolation=cv2.INTER_CUBIC)#보간법. cubic 이 linear 보다 좋음.
+img_stack_sm5[idx, :, :] = img_sm9
 ##
 
-t4 = img3.reshape(-1,)
-t5 = t4[:8033280]
-t6= t5.reshape(1046,2560,3)
+#t4 = img3.reshape(-1,)
+#t5 = t4[:8033280]
+#t6= t5.reshape(1046,2560,3)
 print(t6.shape)
 # close all windows
-t3t = np.array(t3)
-t6t = np.array(t6)
+#t3t = np.array(t3)
+#t6t = np.array(t6)
 
 
 print(img_stack_sm2.shape)
 print(img_stack_sm3.shape)
+#t_q1 = np.array(img_stack_sm2)
+#t_q2 = np.array(img_stack_sm3)
 
-e1 = cv2.addWeighted(img_stack_sm3, 0.5 , img_stack_sm2 , 0.7, 2.4)
+#tqqq1 = np.resize(img_stack_sm2,(1040,2200,3))
+#tqqq2 = np.resize(img_stack_sm3,(1040,2200,3))
+
+e1 = cv2.addWeighted(img_stack_sm6, 0.5 , img_stack_sm5 , 0.7, 2.4)
 cv2.imshow('e1', e1)
 cv2.imwrite("addweighted.png",e1)
 
