@@ -70,8 +70,11 @@ for face in faces_cnn:
     h = face.rect.bottom() - y
      # draw box over face
     cv2.rectangle(img22, (x,y), (x+w,y+h), (0,0,255), 2)
+    
 
 
+
+   
 # write at the top left corner of the image
 # for color identification
 print("img22.shape")
@@ -138,21 +141,22 @@ img_sm9 = cv2.resize(img33, (height2, width2), interpolation=cv2.INTER_CUBIC)#�
 #print(t6.shape)
 
 # close all windows
-#t3t = np.array(t3)
+#t3t = np.array(t3)re
 #t6t = np.array(t6)
 
 
 
 #x = landmark[30][0]
 #y = landmark[30][1] 
-x = 49
-y = 55
+x = 200
+y = 250
     
 sticker_path = os.getenv('HOME')+'/Downloads/4545.png'
 img_sticker = cv2.imread(sticker_path) # 스티커 이미지를 불러옵니다
-img_sticker = cv2.resize(img_sm9,(90,90))
-refined_x = x - 40 // 2
-refined_y = y - 40
+img_sticker = cv2.resize(img_sm9,(500,500))
+refined_x = x 
+refined_y = y 
+
 
 
 sticker_area = img_sm10[refined_y:refined_y+img_sticker.shape[0], refined_x:refined_x+img_sticker.shape[1]]
@@ -171,6 +175,25 @@ cv2.imwrite("imgsm10.png",img_sm10)
 #e1 = cv2.addWeighted(img_sm10, 0.5 , img_sm9 , 0.7, 2.4)
 #cv2.imshow('e1', e1)
 #cv2.imwrite("addweighted3.png",e1)
+
+    
+list_landmarks=[]
+mlib_rects = [(1,1),(2,2),(30,30),(50,50),(60,60),(70,70)]
+for mlib_rect in mlib_rects:
+        
+    points = landmark_predictor(img_sticker,mlib_rect)
+    list_points = list(map(lambda p: (p.x,p.y), points.parts()))
+    list_landmarks.append(list_points)
+    
+    
+for landmark in list_landmarks:
+    for point in landmark:
+        cv2.circle(img_sm10, point, 2, (0, 255, 255), -1)
+
+img_show_rgb1 = cv2.cvtColor(img_sm10, cv2.COLOR_BGR2RGB)
+plt.imshow(img_show_rgb1)
+cv2.imshow('img101', img_show_rgb1)
+cv2.imwrite("imgsm101.png",img_show_rgb1)
 
 
 
